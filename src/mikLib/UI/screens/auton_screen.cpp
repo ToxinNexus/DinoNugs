@@ -183,14 +183,14 @@ void UI_auton_screen::UI_crt_auton_scr() {
     auto bg = UI_crt_bg(UI_crt_rec(0, 45, SCREEN_WIDTH, SCREEN_HEIGHT - 45, auton_bg_color, UI_distance_units::pixels));
     
     auto red_blue_tgl_lbl = UI_crt_gfx(tgl_outline_1);
-    auto red_blue_tgl_txt = UI_crt_gfx({UI_crt_txt("Blue", 37, 76, auton_text_color, auton_bg_color, UI_distance_units::pixels), UI_crt_txt("Red", 165, 76, auton_text_color, auton_bg_color, UI_distance_units::pixels)});
+    auto red_blue_tgl_txt = UI_crt_gfx({UI_crt_txt("Blue ", 37, 76, auton_text_color, auton_bg_color, UI_distance_units::pixels), UI_crt_txt("Red", 165, 76, auton_text_color, auton_bg_color, UI_distance_units::pixels)});
     
 
     auto rings_goal_tgl_lbl = UI_crt_gfx(tgl_outline_2);
     auto rings_goal_tgl_txt = UI_crt_gfx({UI_crt_txt("Left ", 37, 76+49, auton_text_color, auton_bg_color, UI_distance_units::pixels), UI_crt_txt("Right", 155, 76+49, auton_text_color, auton_bg_color, UI_distance_units::pixels)});
     
     auto quals_elims_tgl_lbl = UI_crt_gfx(tgl_outline_3);
-    auto quals_elims_tgl_txt = UI_crt_gfx({UI_crt_txt("Quals ", 34, 76+49+47, auton_text_color, auton_bg_color, UI_distance_units::pixels), UI_crt_txt("Elims", 155, 76+49+47, auton_text_color, auton_bg_color, UI_distance_units::pixels)});
+    auto quals_elims_tgl_txt = UI_crt_gfx({UI_crt_txt("Mid ", 34, 76+49+47, auton_text_color, auton_bg_color, UI_distance_units::pixels), UI_crt_txt("No Mid", 155, 76+49+47, auton_text_color, auton_bg_color, UI_distance_units::pixels)});
     
     auto off_sawp_tgl_lbl = UI_crt_gfx(tgl_outline_4);
     auto off_sawp_tgl_txt = UI_crt_gfx({UI_crt_txt("Off ", 43, 76+49+47+48, auton_text_color, auton_bg_color, UI_distance_units::pixels), UI_crt_txt("Sawp", 162, 76+49+47+48, auton_text_color, auton_bg_color, UI_distance_units::pixels)});
@@ -413,21 +413,21 @@ void UI_auton_screen::queue_autons(bool calibrating, bool set_description) {
 
     if (off_skills) { output = skills(calibrating, var, set_description); return; }
 
-    if (!red_blue && !rings_goal && !quals_elims && !off_sawp) { output = blue_left_winpoint(calibrating, var, set_description); return; }
+    if (!red_blue && !rings_goal && !quals_elims && !off_sawp) { output = blue_left_middle(calibrating, var, set_description); return; }
     if (!red_blue && !rings_goal && !quals_elims &&  off_sawp) { output = blue_left_sawp(calibrating, var, set_description); return; }
-    if (!red_blue && !rings_goal &&  quals_elims && !off_sawp) { output = blue_left_elim(calibrating, var, set_description); return; }
+    if (!red_blue && !rings_goal &&  quals_elims && !off_sawp) { output = blue_left_no_middle(calibrating, var, set_description); return; }
 
-    if (!red_blue &&  rings_goal && !quals_elims && !off_sawp) { output = blue_right_winpoint(calibrating, var, set_description); return; }
+    if (!red_blue &&  rings_goal && !quals_elims && !off_sawp) { output = blue_right_middle(calibrating, var, set_description); return; }
     if (!red_blue &&  rings_goal && !quals_elims &&  off_sawp) { output = blue_right_sawp(calibrating, var, set_description); return; }
-    if (!red_blue &&  rings_goal &&  quals_elims && !off_sawp) { output = blue_right_elim(calibrating, var, set_description); return; }
+    if (!red_blue &&  rings_goal &&  quals_elims && !off_sawp) { output = blue_right_no_middle(calibrating, var, set_description); return; }
 
-    if ( red_blue && !rings_goal && !quals_elims && !off_sawp) { output = red_left_winpoint(calibrating, var, set_description); return; }
+    if ( red_blue && !rings_goal && !quals_elims && !off_sawp) { output = red_left_middle(calibrating, var, set_description); return; }
     if ( red_blue && !rings_goal && !quals_elims &&  off_sawp) { output = red_left_sawp(calibrating, var, set_description); return; }
-    if ( red_blue && !rings_goal &&  quals_elims && !off_sawp) { output = red_left_elim(calibrating, var, set_description); return; }
+    if ( red_blue && !rings_goal &&  quals_elims && !off_sawp) { output = red_left_no_middle(calibrating, var, set_description); return; }
 
-    if ( red_blue &&  rings_goal && !quals_elims && !off_sawp) { output = red_right_winpoint(calibrating, var, set_description); return; }
+    if ( red_blue &&  rings_goal && !quals_elims && !off_sawp) { output = red_right_middle(calibrating, var, set_description); return; }
     if ( red_blue &&  rings_goal && !quals_elims &&  off_sawp) { output = red_right_sawp(calibrating, var, set_description); return; }
-    if ( red_blue &&  rings_goal &&  quals_elims && !off_sawp) { output = red_right_elim(calibrating, var, set_description); return; }
+    if ( red_blue &&  rings_goal &&  quals_elims && !off_sawp) { output = red_right_no_middle(calibrating, var, set_description); return; }
 }
 
 void UI_auton_screen::start_time_limit() {
@@ -697,7 +697,7 @@ void UI_auton_screen::enable_controller_overlay() {
     control_panel = {
         {{controller_btn(false, "[Blue]", "[Red]", [this](){ UI_select_auton(autons::RED_BLUE); flip_toggle(red_blue_tgl, red_blue); save_auton_SD(); } )},
          {controller_btn(false, "[Left]", "[Right]", [this](){ UI_select_auton(autons::RINGS_GOAL); flip_toggle(rings_goal_tgl, rings_goal); save_auton_SD(); })},
-         {controller_btn(false, "[Qual]", "[Elim]", [this](){ UI_select_auton(autons::QUALS_ELIMS); flip_toggle(quals_elims_tgl, quals_elims); save_auton_SD(); })}}, 
+         {controller_btn(false, "[Mid]", "[No Mid]", [this](){ UI_select_auton(autons::QUALS_ELIMS); flip_toggle(quals_elims_tgl, quals_elims); save_auton_SD(); })}}, 
 
         {{controller_btn(false, "[Off]", "[Sawp]", [this](){ UI_select_auton(autons::OFF_SAWP); flip_toggle(off_sawp_tgl, off_sawp); save_auton_SD(); } )}, 
          {controller_btn(false, "[Off]", "[Skills]", [this](){ UI_select_auton(autons::OFF_SKILLS); flip_toggle(config_scr->macro_10_bg_tgl, off_skills); save_auton_SD(); } )}, 
